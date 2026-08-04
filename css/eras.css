@@ -1,0 +1,162 @@
+/* ==========================================================================
+   eras.css — one atmosphere per era.
+   The arc: baroque candlelight → classical porcelain → romantic crimson →
+   industrial bronze → aged roll paper → smoky monochrome → electric dusk →
+   digital cold → lacquered ebony coda.
+   ========================================================================== */
+
+body[data-era='prelude'] {
+  --bg: #100d12;
+  --bg-soft: #171320;
+  --ink: #ece4d2;
+  --ink-dim: #a49a88;
+  --accent: #c9a86a;
+  --accent-soft: rgba(201, 168, 106, 0.16);
+  --line: rgba(236, 228, 210, 0.16);
+}
+
+/* Baroque candlelight — Florence, a workshop after dark */
+body[data-era='cristofori'] {
+  --bg: #191108;
+  --bg-soft: #221809;
+  --ink: #f0e3c8;
+  --ink-dim: #ab9877;
+  --accent: #e3a44f;
+  --accent-soft: rgba(227, 164, 79, 0.16);
+  --line: rgba(240, 227, 200, 0.16);
+}
+
+/* Printed page — ochre and ink */
+body[data-era='maffei'] {
+  --bg: #201811;
+  --bg-soft: #2a2015;
+  --ink: #eee2c8;
+  --ink-dim: #a89678;
+  --accent: #d8b36a;
+  --accent-soft: rgba(216, 179, 106, 0.16);
+  --line: rgba(238, 226, 200, 0.16);
+  --journal-paper: #e9dfc6;
+}
+
+/* Saxon workshop — darker oak, organ-pipe shadows */
+body[data-era='silbermann'] {
+  --bg: #161009;
+  --bg-soft: #20170c;
+  --ink: #ecdfc4;
+  --ink-dim: #a08e72;
+  --accent: #c98f4e;
+  --accent-soft: rgba(201, 143, 78, 0.16);
+  --line: rgba(236, 223, 196, 0.15);
+}
+
+/* Vienna — porcelain, candle-lit salons, gilded restraint */
+body[data-era='vienna'] {
+  --bg: #17141a;
+  --bg-soft: #201c24;
+  --ink: #f0e9d8;
+  --ink-dim: #a79f8f;
+  --accent: #d9c9a0;
+  --accent-soft: rgba(217, 201, 160, 0.15);
+  --line: rgba(240, 233, 216, 0.16);
+}
+
+/* London / Beethoven — storm-brown mahogany and brass */
+body[data-era='london'] {
+  --bg: #170e0c;
+  --bg-soft: #211412;
+  --ink: #eaddc9;
+  --ink-dim: #a18d78;
+  --accent: #c08a3e;
+  --accent-soft: rgba(192, 138, 62, 0.17);
+  --line: rgba(234, 221, 201, 0.15);
+}
+
+/* Érard / Paris — the first blush of romantic crimson */
+body[data-era='erard'],
+body[data-era='anatomy'] {
+  --bg: #1a0e13;
+  --bg-soft: #241318;
+  --ink: #efe0d3;
+  --ink-dim: #a68f88;
+  --accent: #cf6f6a;
+  --accent-soft: rgba(207, 111, 106, 0.16);
+  --line: rgba(239, 224, 211, 0.15);
+}
+
+/* Industrial iron & copper */
+body[data-era='iron'],
+body[data-era='compass'] {
+  --bg: #131110;
+  --bg-soft: #1c1815;
+  --ink: #e9dfd0;
+  --ink-dim: #9d9284;
+  --accent: #c87f33;
+  --accent-soft: rgba(200, 127, 51, 0.17);
+  --line: rgba(233, 223, 208, 0.15);
+}
+
+/* Liszt — deepest crimson, velvet and gaslight */
+body[data-era='liszt'] {
+  --bg: #1e090e;
+  --bg-soft: #2a0d14;
+  --ink: #f2ded6;
+  --ink-dim: #ab8b86;
+  --accent: #d34a55;
+  --accent-soft: rgba(211, 74, 85, 0.18);
+  --line: rgba(242, 222, 214, 0.15);
+}
+
+/* Player-piano era — aged roll paper, warm and mechanical */
+body[data-era='roll'] {
+  --bg: #221a0f;
+  --bg-soft: #2d2314;
+  --ink: #f0e5c9;
+  --ink-dim: #ac9c79;
+  --accent: #e5c98f;
+  --accent-soft: rgba(229, 201, 143, 0.16);
+  --line: rgba(240, 229, 201, 0.16);
+}
+
+/* 20th century — smoky monochrome with tarnished brass */
+body[data-era='modern20'] {
+  --bg: #121212;
+  --bg-soft: #1b1a18;
+  --ink: #e8e3d8;
+  --ink-dim: #999285;
+  --accent: #c9b458;
+  --accent-soft: rgba(201, 180, 88, 0.15);
+  --line: rgba(232, 227, 216, 0.15);
+}
+
+/* Electric dusk — violet stage light and tube warmth */
+body[data-era='electric'] {
+  --bg: #141021;
+  --bg-soft: #1d172e;
+  --ink: #ece2dc;
+  --ink-dim: #9d92a3;
+  --accent: #f0955a;
+  --accent-soft: rgba(240, 149, 90, 0.16);
+  --line: rgba(236, 226, 220, 0.15);
+}
+
+/* Digital cold — LCD cyan on near-black */
+body[data-era='digital'] {
+  --bg: #0b1116;
+  --bg-soft: #101a21;
+  --ink: #dbe7e6;
+  --ink-dim: #7f9395;
+  --accent: #5fd3c4;
+  --accent-soft: rgba(95, 211, 196, 0.14);
+  --line: rgba(219, 231, 230, 0.14);
+}
+
+/* Coda — lacquered ebony and ivory gold */
+body[data-era='coda'] {
+  --bg: #0e0c0f;
+  --bg-soft: #161318;
+  --ink: #efe7d5;
+  --ink-dim: #a59c8a;
+  --accent: #d8c79a;
+  --accent-soft: rgba(216, 199, 154, 0.15);
+  --line: rgba(239, 231, 213, 0.16);
+}

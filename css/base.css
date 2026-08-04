@@ -1,0 +1,212 @@
+/* ==========================================================================
+   base.css — design tokens, reset, typography, cursor, shared primitives
+   ========================================================================== */
+
+:root {
+  /* Type */
+  --font-display: 'Fraunces', 'Noto Serif SC', serif;
+  --font-body: 'Noto Serif SC', 'Songti SC', serif;
+  --font-mono: 'IBM Plex Mono', 'Menlo', monospace;
+
+  /* Era-independent constants */
+  --ivory: #ede3cd;
+  --ebony: #0e0b0d;
+  --dock-height: 178px;
+
+  /* Era theme defaults — overridden per era in eras.css */
+  --bg: #100d12;
+  --bg-soft: #17131b;
+  --ink: #ece4d2;
+  --ink-dim: #a99f8c;
+  --accent: #c9a86a;
+  --accent-soft: rgba(201, 168, 106, 0.14);
+  --line: rgba(236, 228, 210, 0.16);
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 0.55vw + 0.85rem, 1.14rem);
+  line-height: 1.9;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  background-color: var(--bg);
+  transition: background-color 1.4s ease, color 1.4s ease;
+  overflow-x: hidden;
+}
+
+/* Subtle paper grain over everything, like the surface of a piano roll. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.05;
+  background-image:
+    repeating-linear-gradient(0deg, transparent 0 2px, rgba(255, 255, 255, 0.35) 2px 3px),
+    repeating-linear-gradient(90deg, transparent 0 3px, rgba(0, 0, 0, 0.4) 3px 4px);
+  mix-blend-mode: overlay;
+}
+
+img { max-width: 100%; display: block; }
+
+h1, h2, h3 { font-family: var(--font-display); font-weight: 600; margin: 0; }
+
+p { margin: 0 0 1.1em; }
+p:last-child { margin-bottom: 0; }
+
+em { font-style: normal; color: var(--accent); }
+strong { font-weight: 600; color: var(--accent); }
+
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--line); }
+a:hover { border-bottom-color: var(--accent); }
+
+button {
+  font-family: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.72em;
+  letter-spacing: 0.14em;
+  font-weight: 400;
+}
+
+::selection { background: var(--accent); color: var(--ebony); }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* --------------------------------------------------------------------------
+   Scroll-reveal primitive (activated by js/scroll.js)
+   -------------------------------------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(26px);
+  transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 0.9, 0.3, 1);
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* QA hook (?noanim): skip entrances and smooth scrolling entirely */
+.force-visible { scroll-behavior: auto; }
+.force-visible .reveal { opacity: 1; transform: none; transition: none; }
+
+/* --------------------------------------------------------------------------
+   Custom cursor
+   -------------------------------------------------------------------------- */
+.cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 200;
+  pointer-events: none;
+}
+
+.cursor-dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  margin: -3px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.cursor-ring {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  margin: -17px;
+  border-radius: 50%;
+  border: 1px solid var(--accent);
+  opacity: 0.55;
+  transition: opacity 0.25s ease;
+  /* translate + scale are driven per-frame by js/cursor.js */
+}
+
+.cursor.is-active .cursor-ring { opacity: 0.9; }
+
+/* Hide the custom cursor on touch / coarse pointers */
+@media (pointer: coarse) {
+  .cursor { display: none; }
+}
+
+@media (pointer: fine) {
+  body.has-cursor,
+  body.has-cursor a,
+  body.has-cursor button { cursor: none; }
+}
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+.btn-primary {
+  position: relative;
+  font-family: var(--font-body);
+  font-size: 1.06rem;
+  font-weight: 600;
+  letter-spacing: 0.35em;
+  text-indent: 0.35em;
+  color: var(--ebony);
+  background: var(--accent);
+  padding: 1rem 2.6rem;
+  border-radius: 999px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 1.4s ease;
+  box-shadow: 0 0 0 0 var(--accent-soft);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px -8px var(--accent-soft), 0 0 0 8px var(--accent-soft);
+}
+
+.btn-primary .btn-ring {
+  position: absolute;
+  inset: -7px;
+  border: 1px solid var(--accent);
+  border-radius: inherit;
+  opacity: 0.45;
+  animation: btn-breathe 3.2s ease-in-out infinite;
+}
+
+@keyframes btn-breathe {
+  0%, 100% { transform: scale(1); opacity: 0.45; }
+  50% { transform: scale(1.05); opacity: 0.15; }
+}
+
+/* --------------------------------------------------------------------------
+   Reduced motion — every module also checks this in JS
+   -------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+  }
+
+  .reveal { opacity: 1; transform: none; }
+}
