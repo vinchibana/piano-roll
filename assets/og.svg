@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#151013"/>
+  <ellipse cx="900" cy="120" rx="420" ry="260" fill="#C5985D" opacity="0.10"/>
+  <ellipse cx="200" cy="520" rx="360" ry="220" fill="#8B5A2B" opacity="0.08"/>
+  <g transform="translate(96 88)" fill="#EDE3CD">
+    <rect x="0" y="0" width="14" height="48" rx="2"/>
+    <rect x="20" y="0" width="14" height="48" rx="2"/>
+    <rect x="40" y="0" width="14" height="48" rx="2"/>
+    <rect x="60" y="0" width="14" height="48" rx="2"/>
+    <rect x="80" y="0" width="14" height="48" rx="2"/>
+    <rect x="11" y="0" width="10" height="28" fill="#151013"/>
+    <rect x="31" y="0" width="10" height="28" fill="#151013"/>
+    <rect x="51" y="0" width="10" height="28" fill="#151013"/>
+    <rect x="71" y="0" width="10" height="28" fill="#151013"/>
+  </g>
+  <text x="96" y="220" fill="#C5985D" font-family="Georgia, serif" font-size="28" letter-spacing="6">300 YEARS · LISTENING HISTORY</text>
+  <text x="96" y="320" fill="#EDE3CD" font-family="Georgia, serif" font-size="72" font-weight="700">可以听的钢琴三百年</text>
+  <text x="96" y="400" fill="#B8A99A" font-family="Georgia, serif" font-size="36">A Listening History of the Piano</text>
+  <text x="96" y="520" fill="#8A7A6A" font-family="Menlo, monospace" font-size="22">avenryai.com/labs/arts/piano-history</text>
+  <rect x="24" y="24" width="1152" height="582" fill="none" stroke="#C5985D" stroke-opacity="0.35" stroke-width="1"/>
+</svg>
