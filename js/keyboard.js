@@ -13,6 +13,8 @@
 import { engine } from './audio/engine.js';
 import { ERA_BY_ID } from './data/eras.js';
 
+const ENGLISH = document.documentElement.lang.startsWith('en');
+
 const FULL_LOW = 21;   // A0
 const FULL_HIGH = 108; // C8
 const BLACK_SEMITONES = new Set([1, 3, 6, 8, 10]);
@@ -69,7 +71,7 @@ export class KeyboardDock {
       const key = document.createElement('button');
       key.className = `piano-key ${isBlack ? 'is-black' : 'is-white'}`;
       key.dataset.midi = m;
-      key.setAttribute('aria-label', `琴键 ${midiName(m)}`);
+      key.setAttribute('aria-label', ENGLISH ? `Piano key ${midiName(m)}` : `琴键 ${midiName(m)}`);
       key.tabIndex = -1; // pointer/computer-key driven; avoids 88 tab stops
       if (m === 60) key.classList.add('is-middle-c');
       if (isBlack) {

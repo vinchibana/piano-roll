@@ -17,6 +17,9 @@
  *   assets/audio/ambience/{id}.mp3  — optional looping room tone per era
  */
 
+const ENGLISH = document.documentElement.lang.startsWith('en');
+const t = (zh, en) => ENGLISH ? en : zh;
+
 // Timbre profile cheat-sheet:
 //   model: 'struck'   — generic hammered-string additive model
 //          'tine'     — electro-mechanical tine (Rhodes-like)
@@ -31,8 +34,8 @@
 export const ERAS = [
   {
     id: 'prelude',
-    year: '序',
-    name: '序章',
+    year: t('序', 'PROLOGUE'),
+    name: t('序章', 'Prologue'),
     range: [21, 108],
     timbre: { model: 'struck', brightness: 9, decay: 3.2, inharmonicity: 0.00035, hammer: 0.5, gain: 0.9 },
     motifBpm: 66,
@@ -43,8 +46,8 @@ export const ERAS = [
   {
     id: 'cristofori',
     year: '1700',
-    name: '克里斯托福里 · 佛罗伦萨',
-    rangeLabel: '约四个八度 · C2–C6',
+    name: t('克里斯托福里 · 佛罗伦萨', 'Cristofori · Florence'),
+    rangeLabel: t('约四个八度 · C2–C6', 'c. four octaves · C2–C6'),
     range: [36, 84],
     timbre: { model: 'struck', brightness: 5, decay: 1.6, inharmonicity: 0.0012, hammer: 0.75, gain: 0.42 },
     motifBpm: 76,
@@ -57,8 +60,8 @@ export const ERAS = [
   {
     id: 'maffei',
     year: '1711',
-    name: '马费伊的报道',
-    rangeLabel: '约四个八度 · C2–C6',
+    name: t('马费伊的报道', 'Maffei’s published account'),
+    rangeLabel: t('约四个八度 · C2–C6', 'c. four octaves · C2–C6'),
     range: [36, 84],
     timbre: { model: 'struck', brightness: 5, decay: 1.6, inharmonicity: 0.0012, hammer: 0.75, gain: 0.42 },
     motifBpm: 76,
@@ -71,8 +74,8 @@ export const ERAS = [
   {
     id: 'silbermann',
     year: '1730s',
-    name: '西尔伯曼 · 弗赖贝格',
-    rangeLabel: '约四个半八度',
+    name: t('西尔伯曼 · 弗赖贝格', 'Silbermann · Freiberg'),
+    rangeLabel: t('约四个半八度', 'c. four and a half octaves'),
     range: [36, 89],
     timbre: { model: 'struck', brightness: 6, decay: 1.9, inharmonicity: 0.0009, hammer: 0.7, gain: 0.5 },
     motifBpm: 60,
@@ -85,8 +88,8 @@ export const ERAS = [
   {
     id: 'vienna',
     year: '1777',
-    name: '维也纳式击弦机 · 施泰因与莫扎特',
-    rangeLabel: '五个八度 · F1–F6',
+    name: t('维也纳式击弦机 · 施泰因与莫扎特', 'Viennese action · Stein and Mozart'),
+    rangeLabel: t('五个八度 · F1–F6', 'five octaves · F1–F6'),
     range: [29, 89],
     timbre: { model: 'struck', brightness: 7.5, decay: 1.3, inharmonicity: 0.0006, hammer: 0.55, gain: 0.58 },
     motifBpm: 116,
@@ -102,8 +105,8 @@ export const ERAS = [
   {
     id: 'london',
     year: '1818',
-    name: '英式击弦机 · 布罗德伍德与贝多芬',
-    rangeLabel: '六个八度 · C1–C7',
+    name: t('英式击弦机 · 布罗德伍德与贝多芬', 'English action · Broadwood and Beethoven'),
+    rangeLabel: t('六个八度 · C1–C7', 'six octaves · C1–C7'),
     range: [24, 96],
     timbre: { model: 'struck', brightness: 6.5, decay: 2.8, inharmonicity: 0.0005, hammer: 0.65, gain: 0.78 },
     motifBpm: 100,
@@ -117,8 +120,8 @@ export const ERAS = [
   {
     id: 'erard',
     year: '1821',
-    name: '埃拉尔 · 双重擒纵',
-    rangeLabel: '六个半八度',
+    name: t('埃拉尔 · 双重擒纵', 'Érard · double escapement'),
+    rangeLabel: t('六个半八度', 'c. six and a half octaves'),
     range: [24, 101],
     timbre: { model: 'struck', brightness: 8, decay: 3, inharmonicity: 0.0004, hammer: 0.55, gain: 0.8 },
     motifBpm: 138,
@@ -132,9 +135,9 @@ export const ERAS = [
   },
   {
     id: 'anatomy',
-    year: '解剖',
-    name: '击弦机解剖室',
-    rangeLabel: '六个半八度',
+    year: t('解剖', 'ACTION'),
+    name: t('击弦机解剖室', 'Inside the piano action'),
+    rangeLabel: t('六个半八度', 'c. six and a half octaves'),
     range: [24, 101],
     timbre: { model: 'struck', brightness: 8, decay: 3, inharmonicity: 0.0004, hammer: 0.55, gain: 0.8 },
     motifBpm: 120,
@@ -143,8 +146,8 @@ export const ERAS = [
   {
     id: 'iron',
     year: '1859',
-    name: '钢铁与交叉弦 · 施坦威',
-    rangeLabel: '八十五键 · A0–A7',
+    name: t('钢铁与交叉弦 · 施坦威', 'Iron and overstringing · Steinway'),
+    rangeLabel: t('八十五键 · A0–A7', '85 keys · A0–A7'),
     range: [21, 105],
     timbre: { model: 'struck', brightness: 8.5, decay: 3.8, inharmonicity: 0.00032, hammer: 0.6, gain: 0.95 },
     motifBpm: 84,
@@ -158,9 +161,9 @@ export const ERAS = [
   },
   {
     id: 'compass',
-    year: '音域',
-    name: '音域的三百年',
-    rangeLabel: '八十五键 · A0–A7',
+    year: t('音域', 'RANGE'),
+    name: t('音域的三百年', 'Three centuries of compass'),
+    rangeLabel: t('八十五键 · A0–A7', '85 keys · A0–A7'),
     range: [21, 105],
     timbre: { model: 'struck', brightness: 8.5, decay: 3.8, inharmonicity: 0.00032, hammer: 0.6, gain: 0.95 },
     motifBpm: 100,
@@ -169,8 +172,8 @@ export const ERAS = [
   {
     id: 'liszt',
     year: '1840s',
-    name: '李斯特 · 炫技时代',
-    rangeLabel: '八十五键',
+    name: t('李斯特 · 炫技时代', 'Liszt · the virtuoso age'),
+    rangeLabel: t('八十五键', '85 keys'),
     range: [21, 105],
     timbre: { model: 'struck', brightness: 9.5, decay: 3.4, inharmonicity: 0.0003, hammer: 0.7, gain: 1 },
     motifBpm: 152,
@@ -186,8 +189,8 @@ export const ERAS = [
   {
     id: 'roll',
     year: '1900s',
-    name: '自动钢琴 · 纸卷时代',
-    rangeLabel: '八十八键 · A0–C8',
+    name: t('自动钢琴 · 纸卷时代', 'Player piano · the paper-roll era'),
+    rangeLabel: t('八十八键 · A0–C8', '88 keys · A0–C8'),
     range: [21, 108],
     timbre: { model: 'struck', brightness: 8, decay: 2.6, inharmonicity: 0.0004, hammer: 0.8, gain: 0.9 },
     motifBpm: 96,
@@ -201,8 +204,8 @@ export const ERAS = [
   {
     id: 'modern20',
     year: '1940',
-    name: '二十世纪 · 预置与即兴',
-    rangeLabel: '八十八键',
+    name: t('二十世纪 · 预置与即兴', 'Twentieth century · prepared and improvised'),
+    rangeLabel: t('八十八键', '88 keys'),
     range: [21, 108],
     timbre: { model: 'prepared', brightness: 4, decay: 0.9, inharmonicity: 0.003, hammer: 1, gain: 0.85 },
     motifBpm: 108,
@@ -216,8 +219,8 @@ export const ERAS = [
   {
     id: 'electric',
     year: '1965',
-    name: '电与磁 · Rhodes 与 Wurlitzer',
-    rangeLabel: '七十三键 · E1–E7',
+    name: t('电与磁 · Rhodes 与 Wurlitzer', 'Electric and magnetic · Rhodes and Wurlitzer'),
+    rangeLabel: t('七十三键 · E1–E7', '73 keys · E1–E7'),
     range: [28, 100],
     timbre: { model: 'tine', brightness: 6, decay: 3.5, inharmonicity: 0, hammer: 0.3, gain: 0.85 },
     motifBpm: 76,
@@ -231,8 +234,8 @@ export const ERAS = [
   {
     id: 'digital',
     year: '1983',
-    name: '数字时代 · DX7 与 MIDI',
-    rangeLabel: '八十八键',
+    name: t('数字时代 · DX7 与 MIDI', 'Digital era · DX7 and MIDI'),
+    rangeLabel: t('八十八键', '88 keys'),
     range: [21, 108],
     timbre: { model: 'fm', brightness: 7, decay: 3, inharmonicity: 0, hammer: 0.2, gain: 0.8 },
     motifBpm: 72,
@@ -246,9 +249,9 @@ export const ERAS = [
   },
   {
     id: 'coda',
-    year: '今日',
-    name: '终章 · 三百年之后',
-    rangeLabel: '八十八键 · A0–C8',
+    year: t('今日', 'TODAY'),
+    name: t('终章 · 三百年之后', 'Coda · three centuries later'),
+    rangeLabel: t('八十八键 · A0–C8', '88 keys · A0–C8'),
     range: [21, 108],
     timbre: { model: 'struck', brightness: 9, decay: 4, inharmonicity: 0.0003, hammer: 0.55, gain: 0.95 },
     motifBpm: 60,
