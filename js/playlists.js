@@ -1,13 +1,12 @@
 /**
  * playlists.js — "时代乐单": 3–4 historically matched tracks per era,
- * linked to Apple Music search pages (search links are stable even
- * when exact track IDs vary between regions).
+ * linked to fixed Apple Music catalog tracks.
  */
 
 const ENGLISH = document.documentElement.lang.startsWith('en');
 
-/** eraId → [{ work, meta, term }]; term feeds the Apple Music search URL. */
-const PLAYLISTS = {
+/** eraId → [{ work, meta, term }]; term is kept only for catalog maintenance. */
+export const PLAYLISTS = {
   cristofori: [
     { work: '朱斯蒂尼《12 首为「软与响的键琴」而作的奏鸣曲》', meta: 'GIUSTINI · 1732 · 史上最早的钢琴曲集', term: 'Giustini Sonate da cimbalo di piano e forte' },
     { work: 'D. 斯卡拉蒂《d 小调奏鸣曲》K. 9', meta: 'D. SCARLATTI · K. 9', term: 'Scarlatti Sonata K 9' },
@@ -66,7 +65,7 @@ const PLAYLISTS = {
   ],
 };
 
-const PLAYLISTS_EN = {
+export const PLAYLISTS_EN = {
   cristofori: [
     { work: 'Lodovico Giustini — 12 Sonate da cimbalo di piano e forte, Op. 1', meta: 'GIUSTINI · 1732 · FIRST PUBLISHED MUSIC SPECIFICALLY FOR PIANO', term: 'Giustini Sonate da cimbalo di piano e forte' },
     { work: 'Domenico Scarlatti — Sonata in D minor, K. 9', meta: 'D. SCARLATTI · K. 9', term: 'Scarlatti Sonata K 9' },
@@ -125,43 +124,27 @@ const PLAYLISTS_EN = {
   ],
 };
 
-const storefront = ENGLISH ? 'us' : 'cn';
-const searchUrl = (term) => `https://music.apple.com/${storefront}/search?term=${encodeURIComponent(term)}`;
-const appSearchUrl = (term) => `music://music.apple.com/${storefront}/search?term=${encodeURIComponent(term)}`;
-
-const isAppleMobile = () => {
-  const agent = navigator.userAgent;
-  return /iPhone|iPad|iPod/i.test(agent)
-    || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-};
-
 /**
- * Apple Music's HTTPS search URL works in desktop browsers, but iOS may hand
- * that universal link to the Music app without forwarding its `term` query.
- * Give the app the full search URL through its native scheme instead. If the
- * device cannot open it, keep the documented web search as a safe fallback.
+ * Fixed Apple Music song IDs, in the same order as each era's playlist.
+ * These resolve in both the Chinese and US storefronts. Keeping IDs separate
+ * from translated labels guarantees that both language versions open the
+ * same recording.
  */
-const openAppleMusicSearch = (event) => {
-  if (!isAppleMobile()) return;
-
-  event.preventDefault();
-  const link = event.currentTarget;
-  const term = link.dataset.searchTerm;
-  const webUrl = searchUrl(term);
-  let appOpened = false;
-
-  const onVisibilityChange = () => {
-    if (document.visibilityState === 'hidden') appOpened = true;
-  };
-
-  document.addEventListener('visibilitychange', onVisibilityChange, { once: true });
-  window.setTimeout(() => {
-    document.removeEventListener('visibilitychange', onVisibilityChange);
-    if (!appOpened && document.visibilityState === 'visible') window.location.assign(webUrl);
-  }, 1200);
-
-  window.location.assign(appSearchUrl(term));
+export const APPLE_MUSIC_IDS = {
+  cristofori: [945031528, 1724248280, 1592316746],
+  silbermann: [1533357972, 867011851, 1538874282],
+  vienna: [1452658481, 1656166478, 1610306922, 1801337446],
+  london: [1698016382, 282967392, 1685943710, 1473650134],
+  erard: [594180660, 317798792, 511303506],
+  iron: [1452326886, 1452344190, 693394418],
+  liszt: [447288072, 318647859, 447288075, 1452665404],
+  modern20: [1686454299, 484583890, 1443832403, 1034994625],
+  electric: [269732271, 193604625, 158571527, 1443203937],
+  digital: [157473842, 349286436, 1796834407, 1500818105],
 };
+
+const storefront = ENGLISH ? 'us' : 'cn';
+const trackUrl = (trackId) => `https://music.apple.com/${storefront}/song/${trackId}`;
 
 export function initPlaylists() {
   for (const card of document.querySelectorAll('.sound-card')) {
@@ -174,17 +157,17 @@ export function initPlaylists() {
     wrap.innerHTML = `
       <h4 class="playlist-title mono">${ENGLISH ? 'ERA PLAYLIST · LISTEN ON APPLE MUSIC' : '时代乐单 · LISTEN ON APPLE MUSIC'}</h4>
       <ol class="playlist-list">
-        ${tracks.map((track) => `
+        ${tracks.map((track, index) => {
+          const trackId = APPLE_MUSIC_IDS[eraId]?.[index];
+          return `
           <li>
-            <a href="${searchUrl(track.term)}" target="_blank" rel="noopener" data-search-term="${track.term}" data-cursor>
+            <a href="${trackUrl(trackId)}" data-apple-music-id="${trackId}" data-cursor>
               <span class="pl-work">${track.work}</span>
               <span class="pl-meta mono">${track.meta}</span>
             </a>
-          </li>`).join('')}
+          </li>`;
+        }).join('')}
       </ol>`;
     card.appendChild(wrap);
-    wrap.querySelectorAll('a[data-search-term]').forEach((link) => {
-      link.addEventListener('click', openAppleMusicSearch);
-    });
   }
 }

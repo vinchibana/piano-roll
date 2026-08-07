@@ -96,7 +96,7 @@ assets/audio/         ★ 真实录音的放置目录（见下）
   照片或 1911 年《大英百科全书》剖面版画（素材均来自 Wikimedia Commons，
   公有领域 / CC0 / CC BY / CC BY-SA，浮层内注明出处）。Esc 或点击遮罩关闭。
 - **时代乐单**：每张「声音档案」卡片附 3–4 首经史实核对的代表曲目，
-  点击跳转 Apple Music 搜索页（新标签页打开），数据在 `js/playlists.js`。
+  点击通过 Apple Music Universal Link 打开固定曲目，数据在 `js/playlists.js`。
 - **无障碍**：支持 `prefers-reduced-motion`（关闭视差/漂移动画）、键盘焦点可见。
 
 ## 已知待完善项
