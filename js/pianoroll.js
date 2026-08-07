@@ -12,6 +12,8 @@ import { engine } from './audio/engine.js';
 import { ERA_BY_ID } from './data/eras.js';
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const ENGLISH = document.documentElement.lang.startsWith('en');
+const t = (zh, en) => ENGLISH ? en : zh;
 
 /* ==========================================================================
    Hero ambience
@@ -162,7 +164,7 @@ export function initRollPlayer(keyboard) {
       <canvas class="roll-canvas" height="430"></canvas>
     </div>
     <div class="roll-controls">
-      <button class="roll-play" data-cursor><span class="roll-play-label">播放纸卷</span></button>
+      <button class="roll-play" data-cursor><span class="roll-play-label">${t('播放纸卷', 'Play the roll')}</span></button>
       <span class="roll-tune mono">SCOTT JOPLIN · THE ENTERTAINER · 1902 · 88-NOTE ROLL</span>
     </div>`;
 
@@ -314,7 +316,7 @@ export function initRollPlayer(keyboard) {
   const stop = () => {
     playing = false;
     cancelAnimationFrame(rafId);
-    playLabel.textContent = '播放纸卷';
+    playLabel.textContent = t('播放纸卷', 'Play the roll');
     playBtn.classList.remove('is-playing');
     drawFrame(-1.5);
   };
@@ -323,7 +325,7 @@ export function initRollPlayer(keyboard) {
     if (playing) { stop(); return; }
     engine.unlock();
     playing = true;
-    playLabel.textContent = '停止';
+    playLabel.textContent = t('停止', 'Stop');
     playBtn.classList.add('is-playing');
     startTime = engine.ctx.currentTime + 1.4; // leader paper rolls in first
     nextIndex = 0;

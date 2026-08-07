@@ -4,6 +4,8 @@
  * when exact track IDs vary between regions).
  */
 
+const ENGLISH = document.documentElement.lang.startsWith('en');
+
 /** eraId → [{ work, meta, term }]; term feeds the Apple Music search URL. */
 const PLAYLISTS = {
   cristofori: [
@@ -64,18 +66,77 @@ const PLAYLISTS = {
   ],
 };
 
-const searchUrl = (term) => `https://music.apple.com/cn/search?term=${encodeURIComponent(term)}`;
+const PLAYLISTS_EN = {
+  cristofori: [
+    { work: 'Lodovico Giustini — 12 Sonate da cimbalo di piano e forte, Op. 1', meta: 'GIUSTINI · 1732 · FIRST PUBLISHED MUSIC SPECIFICALLY FOR PIANO', term: 'Giustini Sonate da cimbalo di piano e forte' },
+    { work: 'Domenico Scarlatti — Sonata in D minor, K. 9', meta: 'D. SCARLATTI · K. 9', term: 'Scarlatti Sonata K 9' },
+    { work: 'Domenico Scarlatti — Sonata in D minor, K. 141', meta: 'D. SCARLATTI · K. 141 · REPEATED NOTES', term: 'Scarlatti Sonata K 141' },
+  ],
+  silbermann: [
+    { work: 'J. S. Bach — The Musical Offering: Ricercar a 3', meta: 'J. S. BACH · BWV 1079 · POTSDAM, 1747', term: 'Bach Musical Offering Ricercar a 3' },
+    { work: 'C. P. E. Bach — Prussian Sonatas', meta: 'C. P. E. BACH · WQ 48 · DEDICATED TO FREDERICK II', term: 'CPE Bach Prussian Sonatas Wq 48' },
+    { work: 'J. S. Bach — The Well-Tempered Clavier, Book II', meta: 'J. S. BACH · BWV 870–893', term: 'Bach Well-Tempered Clavier Book 2' },
+  ],
+  vienna: [
+    { work: 'Mozart — Piano Sonata in C major, K. 545', meta: 'MOZART · K. 545 · 1788', term: 'Mozart Piano Sonata K 545' },
+    { work: 'Mozart — Piano Concerto No. 23 in A major, K. 488', meta: 'MOZART · K. 488 · 1786', term: 'Mozart Piano Concerto No 23 K 488' },
+    { work: 'Mozart — Fantasia in D minor, K. 397', meta: 'MOZART · K. 397', term: 'Mozart Fantasia D minor K 397' },
+    { work: 'Haydn — Piano Sonata in D major, Hob. XVI:37', meta: 'HAYDN · HOB. XVI:37', term: 'Haydn Piano Sonata Hob XVI 37' },
+  ],
+  london: [
+    { work: 'Beethoven — Piano Sonata in B-flat major, Op. 106 “Hammerklavier”', meta: 'BEETHOVEN · OP. 106 · 1817–18', term: 'Beethoven Hammerklavier Sonata Op 106' },
+    { work: 'Beethoven — Piano Sonata in C-sharp minor, Op. 27 No. 2 “Moonlight”', meta: 'BEETHOVEN · OP. 27/2 · 1801', term: 'Beethoven Moonlight Sonata' },
+    { work: 'Muzio Clementi — Piano Sonatas', meta: 'CLEMENTI · COMPOSER, PIANIST AND LONDON MAKER', term: 'Clementi piano sonata' },
+    { work: 'Jan Ladislav Dussek — Piano Sonatas', meta: 'DUSSEK · A LEADING ADVOCATE OF LARGER ENGLISH PIANOS', term: 'Dussek piano sonata' },
+  ],
+  erard: [
+    { work: 'Chopin — Nocturne in E-flat major, Op. 9 No. 2', meta: 'CHOPIN · OP. 9/2 · 1832', term: 'Chopin Nocturne Op 9 No 2' },
+    { work: 'Mendelssohn — Songs Without Words', meta: 'MENDELSSOHN · LIEDER OHNE WORTE', term: 'Mendelssohn Songs Without Words' },
+    { work: 'Thalberg — Grande fantaisie sur Moïse, Op. 33', meta: 'THALBERG · OP. 33 · ÉRARD VIRTUOSO', term: 'Thalberg Fantasy Moses' },
+  ],
+  iron: [
+    { work: 'Tchaikovsky — Piano Concerto No. 1 in B-flat minor', meta: 'TCHAIKOVSKY · OP. 23 · PREMIERED IN BOSTON, 1875', term: 'Tchaikovsky Piano Concerto No 1' },
+    { work: 'Brahms — Two Rhapsodies, Op. 79', meta: 'BRAHMS · OP. 79 · 1879', term: 'Brahms Rhapsodies Op 79' },
+    { work: 'Grieg — Piano Concerto in A minor', meta: 'GRIEG · OP. 16 · 1868', term: 'Grieg Piano Concerto' },
+  ],
+  liszt: [
+    { work: 'Liszt — La campanella', meta: 'LISZT · GRANDES ÉTUDES DE PAGANINI NO. 3 · 1851', term: 'Liszt La Campanella' },
+    { work: 'Liszt — Hungarian Rhapsody No. 2', meta: 'LISZT · S. 244/2', term: 'Liszt Hungarian Rhapsody No 2' },
+    { work: 'Liszt — Liebesträume No. 3', meta: 'LISZT · S. 541/3', term: 'Liszt Liebestraum No 3' },
+    { work: 'Liszt — Mephisto Waltz No. 1', meta: 'LISZT · S. 514', term: 'Liszt Mephisto Waltz No 1' },
+  ],
+  modern20: [
+    { work: 'Rachmaninoff — Piano Concerto No. 2 in C minor', meta: 'RACHMANINOFF · OP. 18 · 1901', term: 'Rachmaninoff Piano Concerto No 2' },
+    { work: 'James P. Johnson — Carolina Shout', meta: 'JAMES P. JOHNSON · 1921 · A STRIDE LANDMARK', term: 'James P Johnson Carolina Shout' },
+    { work: 'Art Tatum — Tea for Two', meta: 'ART TATUM · 1933', term: 'Art Tatum Tea for Two' },
+    { work: 'John Cage — Sonatas and Interludes', meta: 'CAGE · 1946–48 · PREPARED PIANO', term: 'John Cage Sonatas and Interludes' },
+  ],
+  electric: [
+    { work: 'Ray Charles — What’d I Say', meta: 'RAY CHARLES · 1959 · WURLITZER', term: "Ray Charles What'd I Say" },
+    { work: 'Miles Davis — In a Silent Way', meta: 'MILES DAVIS · 1969 · MULTIPLE ELECTRIC PIANOS', term: 'Miles Davis In a Silent Way' },
+    { work: 'Herbie Hancock — Chameleon', meta: 'HERBIE HANCOCK · 1973', term: 'Herbie Hancock Chameleon' },
+    { work: 'Return to Forever — Spain', meta: 'CHICK COREA · LIGHT AS A FEATHER · 1973', term: 'Return to Forever Spain' },
+  ],
+  digital: [
+    { work: 'Herbie Hancock — Rockit', meta: 'HERBIE HANCOCK · 1983', term: 'Herbie Hancock Rockit' },
+    { work: 'Whitney Houston — Greatest Love of All', meta: 'WHITNEY HOUSTON · 1985 · DX7 ELECTRIC-PIANO INTRO', term: 'Whitney Houston Greatest Love of All' },
+    { work: 'Berlin — Take My Breath Away', meta: 'BERLIN · 1986 · DX7 BASS', term: 'Berlin Take My Breath Away' },
+    { work: 'Ryuichi Sakamoto — Merry Christmas Mr. Lawrence', meta: 'RYUICHI SAKAMOTO · 1983', term: 'Ryuichi Sakamoto Merry Christmas Mr Lawrence' },
+  ],
+};
+
+const searchUrl = (term) => `https://music.apple.com/${ENGLISH ? 'us' : 'cn'}/search?term=${encodeURIComponent(term)}`;
 
 export function initPlaylists() {
   for (const card of document.querySelectorAll('.sound-card')) {
     const eraId = card.closest('section[data-era]')?.dataset.era;
-    const tracks = PLAYLISTS[eraId];
+    const tracks = (ENGLISH ? PLAYLISTS_EN : PLAYLISTS)[eraId];
     if (!tracks) continue;
 
     const wrap = document.createElement('div');
     wrap.className = 'playlist';
     wrap.innerHTML = `
-      <h4 class="playlist-title mono">时代乐单 · LISTEN ON APPLE MUSIC</h4>
+      <h4 class="playlist-title mono">${ENGLISH ? 'ERA PLAYLIST · LISTEN ON APPLE MUSIC' : '时代乐单 · LISTEN ON APPLE MUSIC'}</h4>
       <ol class="playlist-list">
         ${tracks.map((track) => `
           <li>

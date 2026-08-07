@@ -23,6 +23,15 @@
   --line: rgba(236, 228, 210, 0.16);
 }
 
+html[lang='en'] {
+  --font-body: 'Fraunces', 'Iowan Old Style', 'Baskerville', Georgia, serif;
+}
+
+html[lang='en'] body {
+  line-height: 1.72;
+  letter-spacing: 0.012em;
+}
+
 *,
 *::before,
 *::after { box-sizing: border-box; }

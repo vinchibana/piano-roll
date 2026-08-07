@@ -8,17 +8,20 @@
 import { engine } from './audio/engine.js';
 import { ERA_BY_ID } from './data/eras.js';
 
+const ENGLISH = document.documentElement.lang.startsWith('en');
+const t = (zh, en) => ENGLISH ? en : zh;
+
 const FULL_LOW = 21;
 const FULL_SPAN = 88;
 const BLACK_SEMITONES = new Set([1, 3, 6, 8, 10]);
 
 const ROWS = [
-  { eraId: 'cristofori', year: '1700', label: '克里斯托福里', low: 36, high: 84 },
-  { eraId: 'vienna', year: '1777', label: '施泰因 / 瓦尔特', low: 29, high: 89 },
-  { eraId: 'london', year: '1818', label: '布罗德伍德', low: 24, high: 96 },
-  { eraId: 'erard', year: '1821', label: '埃拉尔', low: 24, high: 101 },
-  { eraId: 'iron', year: '1859', label: '施坦威', low: 21, high: 105 },
-  { eraId: 'coda', year: '1880s—今', label: '现代标准 88 键', low: 21, high: 108 },
+  { eraId: 'cristofori', year: '1700', label: t('克里斯托福里', 'Cristofori'), low: 36, high: 84 },
+  { eraId: 'vienna', year: '1777', label: t('施泰因 / 瓦尔特', 'Stein / Walter'), low: 29, high: 89 },
+  { eraId: 'london', year: '1818', label: t('布罗德伍德', 'Broadwood'), low: 24, high: 96 },
+  { eraId: 'erard', year: '1821', label: t('埃拉尔', 'Érard'), low: 24, high: 101 },
+  { eraId: 'iron', year: '1859', label: t('施坦威', 'Steinway'), low: 21, high: 105 },
+  { eraId: 'coda', year: t('1880s—今', '1880s—today'), label: t('现代标准 88 键', 'Modern 88-key standard'), low: 21, high: 108 },
 ];
 
 export function initRangeViz(keyboard) {
@@ -67,8 +70,8 @@ export function initRangeViz(keyboard) {
       <span class="compass-row-label">${row.year}<b>${row.label}</b></span>
       <span class="compass-track">
         <button class="compass-bar" data-cursor style="left:${leftPct}%;width:${widthPct}%"
-          aria-label="${row.label}，${keys} 键，点击试听最低音与最高音">
-          <span class="compass-count">${keys} 键</span>
+          aria-label="${ENGLISH ? `${row.label}, ${keys} keys; select to hear its lowest and highest notes` : `${row.label}，${keys} 键，点击试听最低音与最高音`}">
+          <span class="compass-count">${keys} ${t('键', 'keys')}</span>
         </button>
       </span>`;
 
@@ -90,7 +93,7 @@ export function initRangeViz(keyboard) {
 
   const legend = document.createElement('div');
   legend.className = 'compass-legend';
-  legend.innerHTML = '<span>A0 · 27.5 Hz</span><span>中央 C</span><span>C8 · 4186 Hz</span>';
+  legend.innerHTML = `<span>A0 · 27.5 Hz</span><span>${t('中央 C', 'Middle C')}</span><span>C8 · 4186 Hz</span>`;
 
   host.append(rowsEl, keysEl, legend);
 }

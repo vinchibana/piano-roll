@@ -9,6 +9,7 @@
  */
 
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const ENGLISH = document.documentElement.lang.startsWith('en');
 
 /** eraId → mechanism exhibit. Credits shown verbatim in the caption. */
 const ACTION_MEDIA = {
@@ -91,6 +92,79 @@ const ACTION_MEDIA = {
   },
 };
 
+const ACTION_MEDIA_EN = {
+  cristofori: {
+    alt: 'Cross-section engraving of Cristofori’s 1726 piano action',
+    title: 'Cristofori’s escapement action · 1726',
+    note: 'Below the hammer, notice the movable jack or hopper. Once it throws the hammer, it tips out of the way so the hammer can fall freely. This small piece makes touch-sensitive dynamics possible. The 1911 Encyclopædia Britannica engraving is based on Cristofori’s surviving 1726 Leipzig instrument.',
+    credit: 'Encyclopædia Britannica, 11th ed. (1911) · Wikimedia Commons · Public domain',
+  },
+  silbermann: {
+    alt: 'Photograph of a model of a Silbermann piano action',
+    title: 'Silbermann’s action · model',
+    note: 'Silbermann followed Cristofori’s design closely. The weight and balance of these levers help explain Bach’s early complaint about a heavy touch. Later refinements accompanied the instruments collected by Frederick II of Prussia.',
+    credit: 'Action model photograph · Wikimedia Commons · CC0',
+  },
+  vienna: {
+    alt: 'Engraved cross-section of a Stein-style Viennese piano action',
+    title: 'Stein’s Viennese action · 1770s',
+    note: 'The hammer pivots in a fork-shaped brass kapsel attached directly to the key, with the head facing the player. The mechanism is spare and light—the responsive, even action Mozart praised in his 1777 letter.',
+    credit: 'Encyclopædia Britannica, 11th ed. (1911) · Wikimedia Commons · Public domain',
+  },
+  london: {
+    alt: 'Diagram of an English grand-piano action',
+    title: 'English grand action',
+    note: 'The hammer is hinged to a separate rail, with its head facing away from the player, and is lifted by a jack on the key. Greater leverage and deeper key travel create the heavier, more powerful response associated with Broadwood grands.',
+    credit: 'Diagram · Wikimedia Commons · CC BY-SA 3.0',
+  },
+  erard: {
+    alt: 'Cross-section engraving of Érard’s double-escapement action',
+    title: 'Érard double escapement · 1821',
+    note: 'The spring-loaded repetition lever catches the hammer before it returns fully to rest. The key needs to rise only slightly before another strike is possible. Refined descendants of this system operate in modern grand pianos.',
+    credit: 'Encyclopædia Britannica, 11th ed. (1911) · Wikimedia Commons · Public domain',
+  },
+  iron: {
+    alt: 'Engraved cross-section of a late nineteenth-century Steinway grand action',
+    title: 'Steinway grand action · late nineteenth century',
+    note: 'An industrially refined descendant of Érard’s principle: roller, repetition lever, check and let-off regulation. Each of eighty-eight keys receives its own set of parts—thousands of components working beneath the tension carried by the iron plate.',
+    credit: 'Encyclopædia Britannica, 11th ed. (1911) · Wikimedia Commons · Public domain',
+  },
+  liszt: {
+    alt: 'The 1817 Broadwood piano once owned by Beethoven and later by Liszt, now in Budapest',
+    title: 'A piano passed between two eras',
+    note: 'Broadwood built this six-octave grand in 1817 and sent it to Beethoven; it arrived in Vienna in 1818. After Beethoven’s death it passed through several hands and entered Liszt’s collection in 1846. It is now held by the Hungarian National Museum in Budapest.',
+    credit: 'Photograph · Wikimedia Commons · CC BY 4.0',
+  },
+  modern20: {
+    alt: 'John Cage preparing a grand piano at the Donaueschingen Festival in 1954',
+    title: 'Cage and the prepared piano · 1954',
+    note: 'Backstage at Donaueschingen, Cage leans into the strings to place objects for a prepared-piano performance. The archive caption called it a “repaired grand piano”—a revealing mistranslation of a deliberately transformed instrument.',
+    credit: 'Landesarchiv Baden-Württemberg, Staatsarchiv Freiburg · Wikimedia Commons · CC BY 4.0',
+  },
+  electric: {
+    alt: 'Inside a Fender Rhodes electric piano: hammers, tines and pickups',
+    title: 'Inside the Rhodes: tine and pickup',
+    note: 'Lift the lid and each key leads to a tuned metal tine and an electromagnetic pickup. The hammer remains; the soundboard and strings are gone. Wood and string give way to steel, magnetism and electric current.',
+    credit: 'Photograph · Wikimedia Commons · CC BY-SA 3.0',
+  },
+  digital: {
+    alt: 'Yamaha DX7 synthesizer shown from angled and overhead views',
+    title: 'Yamaha DX7 · 1983',
+    note: 'There is no hammer action to dissect beneath these sixty-one keys—only switches, processors and six FM operators. The mechanism has become an algorithm: the digital era expressed in one instrument.',
+    credit: 'Photograph · Wikimedia Commons · CC BY 4.0',
+  },
+  roll: {
+    alt: 'Engraved cutaway of a Pianola pneumatic player mechanism',
+    title: 'Pianola pneumatic mechanism · c. 1910',
+    note: 'As perforations pass the tracker bar, they open pneumatic channels; bellows and small pneumatic motors move felt-covered fingers that press real piano keys. It is a robot programmed by air and paper.',
+    credit: 'Encyclopædia Britannica, 11th ed. (1911) · Wikimedia Commons · Public domain',
+  },
+};
+
+if (ENGLISH) {
+  for (const [id, copy] of Object.entries(ACTION_MEDIA_EN)) Object.assign(ACTION_MEDIA[id], copy);
+}
+
 /* ------------------------------------------------------------------ */
 /* Modal                                                                */
 /* ------------------------------------------------------------------ */
@@ -105,7 +179,7 @@ function buildModal() {
   modal.innerHTML = `
     <div class="gallery-backdrop" data-gallery-close></div>
     <figure class="gallery-panel">
-      <button class="gallery-close mono" data-gallery-close data-cursor aria-label="关闭">关闭 · ESC</button>
+      <button class="gallery-close mono" data-gallery-close data-cursor aria-label="${ENGLISH ? 'Close' : '关闭'}">${ENGLISH ? 'CLOSE · ESC' : '关闭 · ESC'}</button>
       <div class="gallery-media"><img alt=""></div>
       <figcaption class="gallery-caption">
         <h3 class="gallery-title" id="gallery-title"></h3>
@@ -134,7 +208,7 @@ export function initGallery() {
     img.onerror = () => modal.classList.remove('is-loading');
     titleEl.textContent = media.title;
     noteEl.textContent = media.note;
-    creditEl.textContent = `来源：${media.credit}`;
+    creditEl.textContent = `${ENGLISH ? 'Source' : '来源'}: ${media.credit}`;
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
     requestAnimationFrame(() => modal.classList.add('is-open'));
@@ -187,7 +261,7 @@ function makeGalleryButton(media, open) {
   btn.innerHTML = `
     <svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.4">
       <circle cx="7" cy="7" r="4.6"/><line x1="10.4" y1="10.4" x2="14" y2="14"/>
-    </svg>观察机构`;
+    </svg>${ENGLISH ? 'Examine the action' : '观察机构'}`;
   btn.addEventListener('click', () => open(media, btn));
   return btn;
 }

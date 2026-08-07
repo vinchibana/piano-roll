@@ -12,6 +12,9 @@
 import { engine } from './audio/engine.js';
 import { ERA_BY_ID } from './data/eras.js';
 
+const ENGLISH = document.documentElement.lang.startsWith('en');
+const t = (zh, en) => ENGLISH ? en : zh;
+
 const ACTIONS = [
   {
     id: 'viennese',
@@ -127,6 +130,48 @@ const ACTIONS = [
   },
 ];
 
+if (ENGLISH) {
+  const translations = {
+    viennese: {
+      label: 'Viennese action · 1770s',
+      note: 'The hammer pivots directly on the key in a brass <strong>kapsel</strong>. With very few moving parts, the action is <strong>light, quick and articulate</strong>—the responsive touch Mozart admired, with less reserve of power than the English action.',
+      svg: [
+        ['aria-label="维也纳式击弦机示意图"', 'aria-label="Diagram of a Viennese piano action"'],
+        ['弦 STRING', 'STRING'], ['制动轨', 'BACKCHECK RAIL'],
+        ['琴键 KEY（槌装于键上）', 'KEY · HAMMER PIVOTS ON KEY'],
+        ['琴槌 HAMMER', 'HAMMER'], ['叉形槌座 KAPSEL', 'KAPSEL'],
+      ],
+    },
+    english: {
+      label: 'English grand action · 1790s',
+      note: 'The hammer is hinged to a separate rail and lifted by a <strong>jack</strong> on the key. Deeper key travel and longer leverage produce a <strong>weightier, more powerful</strong> sound. Beethoven’s Broadwood used this family of action; the trade-off was slower repetition.',
+      svg: [
+        ['aria-label="英式击弦机示意图"', 'aria-label="Diagram of an English grand piano action"'],
+        ['弦 STRING', 'STRING'], ['断联钮 SET-OFF', 'SET-OFF BUTTON'],
+        ['槌架铰链', 'HAMMER FLANGE'], ['琴槌 HAMMER', 'HAMMER'],
+        ['琴键 KEY', 'KEY'], ['顶杆 JACK', 'JACK'],
+      ],
+    },
+    erard: {
+      label: 'Érard double escapement · 1821',
+      note: 'A spring-loaded <strong>repetition lever</strong> catches the hammer partway down, allowing another strike after the key rises only slightly. Try it: the hammer will <strong>strike twice</strong>. This principle remains fundamental to the modern grand action.',
+      svg: [
+        ['aria-label="埃拉尔双重擒纵机构示意图"', 'aria-label="Diagram of Érard’s double-escapement action"'],
+        ['弦 STRING', 'STRING'], ['琴槌 HAMMER', 'HAMMER'],
+        ['琴键 KEY', 'KEY'], ['回止 CHECK', 'CHECK'],
+        ['复震杠杆 + 弹簧 REPETITION LEVER', 'REPETITION LEVER + SPRING'],
+      ],
+    },
+  };
+
+  for (const action of ACTIONS) {
+    const copy = translations[action.id];
+    action.label = copy.label;
+    action.note = copy.note;
+    for (const [from, to] of copy.svg) action.svg = action.svg.replace(from, to);
+  }
+}
+
 /** Play the demo notes with a given era's timbre, flashing dock keys. */
 function playDemo(eraId, seq, keyboard) {
   engine.unlock();
@@ -158,7 +203,7 @@ export function initAnatomy(keyboard) {
       <div class="anatomy-caption">
         <p class="anatomy-note">${action.note}</p>
         <button class="motif-btn anatomy-strike" data-cursor>
-          <span class="motif-icon" aria-hidden="true"></span>按下琴键
+          <span class="motif-icon" aria-hidden="true"></span>${t('按下琴键', 'Press the key')}
         </button>
       </div>`;
     for (const btn of tabs.children) {

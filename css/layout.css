@@ -39,6 +39,34 @@
   transition: opacity 0.6s ease;
 }
 
+.topbar-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.topbar-lang {
+  display: inline-grid;
+  place-items: center;
+  min-width: 2.5rem;
+  min-height: 2.1rem;
+  padding: 0.35rem 0.65rem;
+  color: var(--ink-dim);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.66rem;
+  letter-spacing: 0.16em;
+  text-decoration: none;
+  transition: color 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.topbar-lang:hover,
+.topbar-lang:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
 .topbar-sound {
   display: inline-flex;
   align-items: center;
@@ -56,6 +84,20 @@
 .topbar-sound:hover { color: var(--accent); border-color: var(--accent); }
 .topbar-sound[aria-pressed='true'] { color: var(--accent); border-color: var(--accent); }
 .topbar-sound[aria-pressed='false'] .icon-wave { opacity: 0.2; }
+
+html[lang='en'] .topbar-brand {
+  letter-spacing: 0.12em;
+}
+
+html[lang='en'] .hero-title {
+  max-width: 12ch;
+  font-size: clamp(3.45rem, 8.4vw, 8.8rem);
+  line-height: 0.92;
+}
+
+html[lang='en'] .chapter-title {
+  text-wrap: balance;
+}
 
 /* --------------------------------------------------------------------------
    Progress rail — a punched paper strip beside the page
@@ -128,6 +170,32 @@
   .rail { display: none; }
 }
 
+@media (max-width: 560px) {
+  .topbar {
+    gap: 0.55rem;
+  }
+
+  .topbar-brand {
+    max-width: 48vw;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .topbar-actions {
+    gap: 0.35rem;
+  }
+
+  .topbar-lang {
+    min-width: 2.2rem;
+    padding-inline: 0.5rem;
+  }
+
+  .topbar-sound {
+    padding-inline: 0.65rem;
+  }
+}
+
 /* --------------------------------------------------------------------------
    Hero
    -------------------------------------------------------------------------- */
@@ -138,6 +206,10 @@
   place-items: center;
   overflow: hidden;
   padding: 4rem 1.5rem calc(var(--dock-height) + 2rem);
+}
+
+.chapter {
+  scroll-margin-top: 4.75rem;
 }
 
 .hero-canvas {

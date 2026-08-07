@@ -18,6 +18,9 @@ import { initRangeViz } from './rangeviz.js';
 import { initGallery } from './gallery.js';
 import { initPlaylists } from './playlists.js';
 
+const ENGLISH = document.documentElement.lang.startsWith('en');
+const t = (zh, en) => ENGLISH ? en : zh;
+
 const keyboard = new KeyboardDock();
 keyboard.setEra('prelude');
 
@@ -55,14 +58,14 @@ const soundLabel = document.getElementById('sound-label');
 
 function setSoundUI(on) {
   soundToggle.setAttribute('aria-pressed', String(on));
-  soundLabel.textContent = on ? '声音 开' : '声音 关';
+  soundLabel.textContent = on ? t('声音 开', 'Sound on') : t('声音 关', 'Sound off');
 }
 
 soundToggle.addEventListener('click', () => {
   if (!engine.unlocked) {
     engine.unlock();
     setSoundUI(true);
-    showToast('声音已开启 · 弹弹下方的琴键吧');
+    showToast(t('声音已开启 · 弹弹下方的琴键吧', 'Sound is on · try the keyboard below'));
     return;
   }
   const nowMuted = !engine.muted;
@@ -80,7 +83,7 @@ beginBtn.addEventListener('click', () => {
   const era = ERA_BY_ID.prelude;
   engine.playMotif(era, { onNote: (midi) => keyboard.flashKey(midi, 400) });
 
-  showToast('声音已开启 · 向下滚动，键盘会随时代改变');
+  showToast(t('声音已开启 · 向下滚动，键盘会随时代改变', 'Sound is on · scroll to hear the keyboard change with time'));
   document.getElementById('cristofori').scrollIntoView({ behavior: 'smooth' });
 });
 
@@ -138,5 +141,5 @@ dockToggle.addEventListener('click', () => {
   const collapsed = dock.dataset.collapsed === 'true';
   dock.dataset.collapsed = String(!collapsed);
   dockToggle.setAttribute('aria-expanded', String(collapsed));
-  dockToggle.textContent = collapsed ? '收起键盘' : '展开键盘';
+  dockToggle.textContent = collapsed ? t('收起键盘', 'Hide keyboard') : t('展开键盘', 'Show keyboard');
 });
