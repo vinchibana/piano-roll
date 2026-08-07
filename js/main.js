@@ -127,6 +127,9 @@ for (const btn of document.querySelectorAll('.motif-btn[data-motif]')) {
         }
       },
     });
+    if (btn.dataset.recording) {
+      showToast(`${t('正在播放', 'Now playing')} · ${btn.dataset.recording}`, 5200);
+    }
   });
 }
 

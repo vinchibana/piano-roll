@@ -1,0 +1,6 @@
+.DS_Store
+qa/
+qa-english.mjs
+
+# Keep full-length source demos local; the site ships normalized excerpts only.
+assets/audio/modartt-demos/*.mp3

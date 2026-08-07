@@ -125,7 +125,43 @@ const PLAYLISTS_EN = {
   ],
 };
 
-const searchUrl = (term) => `https://music.apple.com/${ENGLISH ? 'us' : 'cn'}/search?term=${encodeURIComponent(term)}`;
+const storefront = ENGLISH ? 'us' : 'cn';
+const searchUrl = (term) => `https://music.apple.com/${storefront}/search?term=${encodeURIComponent(term)}`;
+const appSearchUrl = (term) => `music://music.apple.com/${storefront}/search?term=${encodeURIComponent(term)}`;
+
+const isAppleMobile = () => {
+  const agent = navigator.userAgent;
+  return /iPhone|iPad|iPod/i.test(agent)
+    || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+};
+
+/**
+ * Apple Music's HTTPS search URL works in desktop browsers, but iOS may hand
+ * that universal link to the Music app without forwarding its `term` query.
+ * Give the app the full search URL through its native scheme instead. If the
+ * device cannot open it, keep the documented web search as a safe fallback.
+ */
+const openAppleMusicSearch = (event) => {
+  if (!isAppleMobile()) return;
+
+  event.preventDefault();
+  const link = event.currentTarget;
+  const term = link.dataset.searchTerm;
+  const webUrl = searchUrl(term);
+  let appOpened = false;
+
+  const onVisibilityChange = () => {
+    if (document.visibilityState === 'hidden') appOpened = true;
+  };
+
+  document.addEventListener('visibilitychange', onVisibilityChange, { once: true });
+  window.setTimeout(() => {
+    document.removeEventListener('visibilitychange', onVisibilityChange);
+    if (!appOpened && document.visibilityState === 'visible') window.location.assign(webUrl);
+  }, 1200);
+
+  window.location.assign(appSearchUrl(term));
+};
 
 export function initPlaylists() {
   for (const card of document.querySelectorAll('.sound-card')) {
@@ -140,12 +176,15 @@ export function initPlaylists() {
       <ol class="playlist-list">
         ${tracks.map((track) => `
           <li>
-            <a href="${searchUrl(track.term)}" target="_blank" rel="noopener" data-cursor>
+            <a href="${searchUrl(track.term)}" target="_blank" rel="noopener" data-search-term="${track.term}" data-cursor>
               <span class="pl-work">${track.work}</span>
               <span class="pl-meta mono">${track.meta}</span>
             </a>
           </li>`).join('')}
       </ol>`;
     card.appendChild(wrap);
+    wrap.querySelectorAll('a[data-search-term]').forEach((link) => {
+      link.addEventListener('click', openAppleMusicSearch);
+    });
   }
 }

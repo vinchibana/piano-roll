@@ -1,4 +1,4 @@
-# 可以听的钢琴三百年 · piano-roll
+# 可以听的钢琴三百年 · A Listening History of the Piano
 
 > 我把 300 年钢琴史，做成了一个可以听的网站。
 
@@ -22,7 +22,7 @@
 HTML 文件打开）：
 
 ```bash
-cd piano-roll
+cd piano-roll-bilingual
 python3 -m http.server 8000
 # 打开 http://localhost:8000
 ```

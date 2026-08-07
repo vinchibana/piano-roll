@@ -25,6 +25,7 @@ export class AudioEngine {
     /** url -> AudioBuffer | 'missing' | Promise */
     this.bufferCache = new Map();
     this.motifTimer = null;
+    this.motifSource = null;
     this.motifVoices = [];
     this.ambienceSource = null;
     this.ambienceGain = null;
@@ -131,9 +132,13 @@ export class AudioEngine {
     const fileBuffer = await this.#firstAvailableBuffer([`assets/audio/motifs/${era.id}.mp3`]);
     if (fileBuffer) {
       const src = this.#playBuffer(fileBuffer, this.ctx.currentTime, 0.9);
+      this.motifSource = src;
+      src.addEventListener('ended', () => {
+        if (this.motifSource === src) this.motifSource = null;
+      }, { once: true });
       const timer = setTimeout(() => onDone?.(), fileBuffer.duration * 1000 + 100);
       this.motifTimer = timer;
-      return () => { clearTimeout(timer); src.stop(); };
+      return () => this.stopMotif();
     }
 
     const beat = 60 / (era.motifBpm ?? 90);
@@ -155,6 +160,10 @@ export class AudioEngine {
 
   stopMotif() {
     if (this.motifTimer) clearTimeout(this.motifTimer);
+    if (this.motifSource) {
+      try { this.motifSource.stop(); } catch { /* already stopped */ }
+      this.motifSource = null;
+    }
     for (const timer of this.motifVoices) clearTimeout(timer);
     this.motifVoices = [];
     this.motifTimer = null;

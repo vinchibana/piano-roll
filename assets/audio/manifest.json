@@ -1,4 +1,14 @@
 {
   "_说明": "录音文件清单：把制作好的 mp3 放进对应目录后，将其相对路径加入 files 数组（相对 assets/audio/），例如 notes/60.mp3、motifs/cristofori.mp3、cristofori/60.mp3、ambience/roll.mp3。删除本文件可恢复为自动探测模式（功能相同，但控制台会出现 404 噪音）。",
-  "files": []
+  "files": [
+    "motifs/cristofori.mp3",
+    "motifs/silbermann.mp3",
+    "motifs/vienna.mp3",
+    "motifs/london.mp3",
+    "motifs/erard.mp3",
+    "motifs/iron.mp3",
+    "motifs/liszt.mp3",
+    "motifs/electric.mp3",
+    "motifs/coda.mp3"
+  ]
 }
